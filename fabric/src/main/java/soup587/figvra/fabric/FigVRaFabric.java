@@ -1,14 +1,14 @@
-package org.figuramc.exampleplugin.fabric;
+package soup587.figvra.fabric;
 
 import net.fabricmc.api.ModInitializer;
-import org.figuramc.exampleplugin.ExamplePlugin;
+import soup587.figvra.FigVRa;
 
 /**
  * A mod class is not technically needed for Fabric to load the Plugin, but it's still nice to have.
  */
-public class ExamplePluginFabric implements ModInitializer {
+public class FigVRaFabric implements ModInitializer {
     @Override
     public void onInitialize() {
-        ExamplePlugin.init();
+        FigVRa.init();
     }
 }

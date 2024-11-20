@@ -1,11 +1,14 @@
 {
   "required": true,
-  "package": "org.figuramc.exampleplugin.mixin",
+  "package": "soup587.figvra.mixin",
   "compatibilityLevel": "JAVA_17",
   "minVersion": "0.8",
   "client": [
   ],
   "mixins": [
+    "EntityAPIMixin",
+    "LivingEntityAPIMixin",
+    "PlayerAPIMixin"
   ],
   "injectors": {
     "defaultRequire": 1

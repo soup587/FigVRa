@@ -25,10 +25,18 @@ subprojects {
             url = uri("https://maven.figuramc.org/snapshots")
         }
         maven { url 'https://jitpack.io' }
+        maven {
+            name = "Modrinth"
+            url = "https://api.modrinth.com/maven"
+        }
     }
 
     dependencies {
         minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
+
+        modImplementation "com.electronwill.night-config:toml:3.6.6"
+        modImplementation "com.electronwill.night-config:core:3.6.6"
+        modImplementation "maven.modrinth:vivecraft:1.20.1-1.1.14-fabric"
 
         mappings loom.layered {
 			mappings("org.quiltmc:quilt-mappings:$minecraft_version+build.$mappings:intermediary-v2")

@@ -16,24 +16,12 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "org.figuramc.exampleplugin.fabric.ExamplePluginFabric"
-    ],
-    "figura_api": [
-      "org.figuramc.exampleplugin.ExamplePlugin"
-    ],
-    "figura_permissions": [
-      "org.figuramc.exampleplugin.ExamplePermissionsPlugin"
-    ],
-    "figura_screen": [
-      "org.figuramc.exampleplugin.ExampleScreensPlugin"
-    ],
-    "figura_vanilla_part": [
-      "org.figuramc.exampleplugin.ExampleVanillaPartPlugin"
-    ],
-    "figura_example": [
-      "org.figuramc.exampleplugin.ExampleEventPlugin"
+      "soup587.figvra.fabric.FigVRaFabric"
     ]
   },
+  "mixins": [
+    "figvra-common.mixins.json"
+  ],
   "depends": {
     "fabric": "*",
     "minecraft": ">=1.20",
