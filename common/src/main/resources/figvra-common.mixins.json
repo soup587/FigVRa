@@ -8,7 +8,10 @@
   "mixins": [
     "EntityAPIMixin",
     "LivingEntityAPIMixin",
-    "PlayerAPIMixin"
+    "PlayerAPIMixin",
+    "RendererAPIMixin",
+    "VanillaModelPartMixin",
+    "VanillaModelProviderMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -5,10 +5,18 @@ import org.figuramc.figura.lua.LuaWhitelist;
 import org.figuramc.figura.lua.api.entity.PlayerAPI;
 import org.figuramc.figura.lua.docs.LuaMethodDoc;
 import org.figuramc.figura.math.vector.FiguraVec3;
+import org.luaj.vm2.LuaTable;
+import org.luaj.vm2.LuaValue;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.vivecraft.client.VRPlayersClient;
 import org.vivecraft.client.VRPlayersClient.RotInfo;
+import org.vivecraft.client_vr.VRState;
+import soup587.figvra.MathUtils;
+
+import java.util.HashMap;
+
+import static org.vivecraft.client.VRPlayersClient.getMainPlayerRotInfo;
 
 @Mixin(value = PlayerAPI.class, remap = false)
 public abstract class PlayerAPIMixin  extends LivingEntityAPIMixin<Player>{
@@ -16,13 +24,40 @@ public abstract class PlayerAPIMixin  extends LivingEntityAPIMixin<Player>{
     @Unique private VRPlayersClient VRPlayer;
 
     @Unique
-    private RotInfo getRotInfo(Player player) {
+    @LuaWhitelist
+    @LuaMethodDoc("player.get_vr_rot")
+    public HashMap<String,Object> getVRRots() {
+        checkEntity();
         VRPlayersClient vrInst = VRPlayersClient.getInstance();
-        return vrInst.getRotationsForPlayer(player.getUUID());
+        if (vrInst.isVRPlayer(entity)) {
+            HashMap<String,Object> RotTable = new HashMap<>();
+            RotInfo VRRot;
+            VRRot = vrInst.getRotationsForPlayer(entity.getUUID());
+
+            RotTable.put("seated", LuaValue.valueOf(VRRot.seated));
+            RotTable.put("leftHanded", VRRot.reverse);
+            RotTable.put("donorHmd", VRRot.hmd);
+
+            RotTable.put("headRot", MathUtils.quatToVec(VRRot.headQuat));
+            RotTable.put("headDir", FiguraVec3.fromVec3(VRRot.headRot));
+            RotTable.put("headPos", FiguraVec3.fromVec3(VRRot.Headpos));
+
+            RotTable.put("leftArmRot", MathUtils.quatToVec(VRRot.leftArmQuat));
+            RotTable.put("leftArmDir", FiguraVec3.fromVec3(VRRot.leftArmRot));
+            RotTable.put("leftArmPos", FiguraVec3.fromVec3(VRRot.leftArmPos));
+
+            RotTable.put("rightArmRot", MathUtils.quatToVec(VRRot.rightArmQuat));
+            RotTable.put("rightArmDir", FiguraVec3.fromVec3(VRRot.rightArmRot));
+            RotTable.put("rightArmPos", FiguraVec3.fromVec3(VRRot.rightArmPos));
+
+            RotTable.put("worldScale", VRRot.worldScale);
+            RotTable.put("heightScale", VRRot.heightScale);
+
+            return RotTable;
+        } else {
+            return null;
+        }
     }
-
-
-
 
     @Unique
     @LuaWhitelist
@@ -30,163 +65,6 @@ public abstract class PlayerAPIMixin  extends LivingEntityAPIMixin<Player>{
     public boolean isInVR() {
         checkEntity();
         return VRPlayersClient.getInstance().isVRPlayer(entity);
-    }
-
-    @Unique
-    @LuaWhitelist
-    @LuaMethodDoc("player.vr_is_seated")
-    public boolean isVRSeated() {
-        checkEntity();
-        RotInfo rinfo = getRotInfo(entity);
-        if (rinfo != null) {
-            return getRotInfo(entity).seated;
-        } else {
-            return false;
-        }
-    }
-
-    @Unique
-    @LuaWhitelist
-    @LuaMethodDoc("player.vr_is_left_handed")
-    public boolean isVRLeftHanded() {
-        checkEntity();
-        RotInfo rinfo = getRotInfo(entity);
-        if (rinfo != null) {
-            return getRotInfo(entity).reverse;
-        } else {
-            return false;
-        }
-    }
-
-    @Unique
-    @LuaWhitelist
-    @LuaMethodDoc("player.vr_donor_headset")
-    public int getDonorHmd() {
-        checkEntity();
-        RotInfo rinfo = getRotInfo(entity);
-        if (rinfo != null) {
-            return getRotInfo(entity).hmd;
-        } else {
-            return 0;
-        }
-    }
-
-//    @Unique
-//    @LuaWhitelist
-//    @LuaMethodDoc("player.vr_get_head_rot")
-//    public FiguraVec3 getVRHeadRot() {
-//        checkEntity();
-//        RotInfo rinfo = getRotInfo(entity);
-//        if (rinfo != null) {
-//            var quaternion = getRotInfo(entity).headQuat;
-//            return FiguraVec3.fromVec3(quaternion.toEuler().forward().toVector3d());
-//        } else {
-//            return null;
-//        }
-//    }
-
-    @Unique
-    @LuaWhitelist
-    @LuaMethodDoc("player.vr_get_head_dir")
-    public FiguraVec3 getVRHeadDir() {
-        checkEntity();
-        RotInfo rinfo = getRotInfo(entity);
-        if (rinfo != null) {
-            return FiguraVec3.fromVec3(getRotInfo(entity).headRot);
-        } else {
-            return null;
-        }
-    }
-
-    @Unique
-    @LuaWhitelist
-    @LuaMethodDoc("player.vr_get_head_pos")
-    public FiguraVec3 getVRHeadPos() {
-        checkEntity();
-        RotInfo rinfo = getRotInfo(entity);
-        if (rinfo != null) {
-            return FiguraVec3.fromVec3(getRotInfo(entity).Headpos);
-        } else {
-            return null;
-        }
-    }
-
-    @Unique
-    @LuaWhitelist
-    @LuaMethodDoc("player.vr_get_left_arm_dir")
-    public FiguraVec3 getVRLeftHandDir() {
-        checkEntity();
-        RotInfo rinfo = getRotInfo(entity);
-        if (rinfo != null) {
-            return FiguraVec3.fromVec3(getRotInfo(entity).leftArmRot);
-        } else {
-            return null;
-        }
-    }
-
-    @Unique
-    @LuaWhitelist
-    @LuaMethodDoc("player.vr_get_left_arm_pos")
-    public FiguraVec3 getVRLeftHandPos() {
-        checkEntity();
-        RotInfo rinfo = getRotInfo(entity);
-        if (rinfo != null) {
-            return FiguraVec3.fromVec3(getRotInfo(entity).leftArmPos);
-        } else {
-            return null;
-        }
-    }
-
-    @Unique
-    @LuaWhitelist
-    @LuaMethodDoc("player.vr_get_right_arm_dir")
-    public FiguraVec3 getVRRightHandDir() {
-        checkEntity();
-        RotInfo rinfo = getRotInfo(entity);
-        if (rinfo != null) {
-            return FiguraVec3.fromVec3(getRotInfo(entity).rightArmRot);
-        } else {
-            return null;
-        }
-    }
-
-    @Unique
-    @LuaWhitelist
-    @LuaMethodDoc("player.vr_get_right_arm_pos")
-    public FiguraVec3 getVRRightHandPos() {
-        checkEntity();
-        RotInfo rinfo = getRotInfo(entity);
-        if (rinfo != null) {
-            return FiguraVec3.fromVec3(getRotInfo(entity).rightArmPos);
-        } else {
-            return null;
-        }
-    }
-
-    @Unique
-    @LuaWhitelist
-    @LuaMethodDoc("player.vr_world_scale")
-    public float getVRWorldScale() {
-        checkEntity();
-        RotInfo rinfo = getRotInfo(entity);
-        if (rinfo != null) {
-            return getRotInfo(entity).worldScale;
-        } else {
-            return 1;
-        }
-    }
-
-    @Unique
-    @LuaWhitelist
-    @LuaMethodDoc("player.vr_height_scale")
-    public float getVRHeightScale() {
-        checkEntity();
-        RotInfo rinfo = getRotInfo(entity);
-        if (rinfo != null) {
-            return getRotInfo(entity).heightScale;
-        } else {
-            return 1;
-        }
     }
 
 }
