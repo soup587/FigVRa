@@ -30,7 +30,8 @@ public class FigVRaVanillaParts implements FiguraVanillaPart {
                 new Pair<>("LEFT_SHOULDER", model -> model instanceof VRPlayerModel_WithArms<?> m ? m.leftShoulder : null),
                 new Pair<>("RIGHT_SHOULDER", model -> model instanceof VRPlayerModel_WithArms<?> m ? m.rightShoulder : null),
                 new Pair<>("LEFT_SHOULDER_LAYER", model -> model instanceof VRPlayerModel_WithArms<?> m ? m.leftShoulder_sleeve : null),
-                new Pair<>("RIGHT_SHOULDER_LAYER", model -> model instanceof VRPlayerModel_WithArms<?> m ? m.rightShoulder_sleeve : null)
+                new Pair<>("RIGHT_SHOULDER_LAYER", model -> model instanceof VRPlayerModel_WithArms<?> m ? m.rightShoulder_sleeve : null),
+                new Pair<>("TEST", model -> model instanceof PlayerModel<?> m ? m.leftArm : null)
         );
     }
 }

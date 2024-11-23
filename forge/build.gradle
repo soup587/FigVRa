@@ -14,8 +14,8 @@ loom {
         convertAccessWideners = true
         extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
 
-        mixinConfig "FigVRa-common.mixins.json"
-        mixinConfig "FigVRa.mixins.json"
+        mixinConfig "figvra-common.mixins.json"
+        mixinConfig "figvra.mixins.json"
     }
 }
 
