@@ -17,9 +17,6 @@
   "entrypoints": {
     "main": [
       "soup587.figvra.fabric.FigVRaFabric"
-    ],
-    "figura_vanilla_part": [
-      "soup587.figvra.FigVRaVanillaParts"
     ]
   },
   "mixins": [

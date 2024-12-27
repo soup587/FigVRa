@@ -19,21 +19,6 @@ public abstract class EntityAPIMixin<T extends Entity> {
     @Shadow protected abstract boolean checkEntity();
     @Shadow protected T entity;
 
-//    @ModifyReturnValue(method = "getLookDir", at = @At("RETURN"))
-//    private FiguraVec3 vrLookDir(FiguraVec3 original) {
-//        if (entity instanceof Player) {
-//            VRPlayersClient vrInst = VRPlayersClient.getInstance();
-//            if (vrInst.isVRPlayer((Player) entity)) {
-//                return FiguraVec3.fromVec3(vrInst.getRotationsForPlayer(entity.getUUID()).headRot);
-//            }
-//            else {
-//                return original;
-//            }
-//        } else {
-//            return original;
-//        }
-//    }
-
     @LuaWhitelist
     @LuaMethodDoc("entity.get_look_dir")
     @Overwrite

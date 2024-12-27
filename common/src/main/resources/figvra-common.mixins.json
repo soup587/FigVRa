@@ -4,15 +4,12 @@
   "compatibilityLevel": "JAVA_17",
   "minVersion": "0.8",
   "client": [
-    "LivingEntityRendererMixin"
   ],
   "mixins": [
     "EntityAPIMixin",
     "LivingEntityAPIMixin",
     "PlayerAPIMixin",
-    "RendererAPIMixin",
-    "VanillaModelPartMixin",
-    "VanillaModelProviderMixin"
+    "RendererAPIMixin"
   ],
   "injectors": {
     "defaultRequire": 1
