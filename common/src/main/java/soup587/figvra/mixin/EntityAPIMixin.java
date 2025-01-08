@@ -7,12 +7,13 @@ import org.figuramc.figura.lua.LuaWhitelist;
 import org.figuramc.figura.lua.api.entity.EntityAPI;
 import org.figuramc.figura.lua.docs.LuaMethodDoc;
 import org.figuramc.figura.math.vector.FiguraVec3;
+import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.vivecraft.client.VRPlayersClient;
+import org.vivecraft.client.ClientVRPlayers;
 
 @Mixin(value = EntityAPI.class, remap = false)
 public abstract class EntityAPIMixin<T extends Entity> {
@@ -25,9 +26,9 @@ public abstract class EntityAPIMixin<T extends Entity> {
     public FiguraVec3 getLookDir() {
         checkEntity();
         if (entity instanceof Player) {
-            VRPlayersClient vrInst = VRPlayersClient.getInstance();
+            ClientVRPlayers vrInst = ClientVRPlayers.getInstance();
             if (vrInst.isVRPlayer((Player) entity)) {
-                return FiguraVec3.fromVec3(vrInst.getRotationsForPlayer(entity.getUUID()).headRot);
+                return FiguraVec3.fromVec3f((Vector3f) vrInst.getRotationsForPlayer(entity.getUUID()).headRot);
                 }
             else {
                 return FiguraVec3.fromVec3(entity.getLookAngle());
