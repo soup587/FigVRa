@@ -5,94 +5,52 @@ import org.figuramc.figura.lua.LuaWhitelist;
 import org.figuramc.figura.lua.api.entity.PlayerAPI;
 import org.figuramc.figura.lua.docs.LuaMethodDoc;
 import org.figuramc.figura.math.vector.FiguraVec3;
-import org.luaj.vm2.LuaTable;
-import org.luaj.vm2.LuaValue;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
-import org.vivecraft.client.ClientVRPlayers;
-import org.vivecraft.client.ClientVRPlayers.RotInfo;
-import org.vivecraft.client_vr.VRState;
-import org.vivecraft.common.network.FBTMode;
-import soup587.figvra.MathUtils;
+import org.vivecraft.api.VRAPI;
+import org.vivecraft.api.data.VRBodyPart;
+import org.vivecraft.api.data.VRBodyPartData;
+import org.vivecraft.api.data.VRPose;
 
 import java.util.HashMap;
-
-import static org.vivecraft.client.ClientVRPlayers.getMainPlayerRotInfo;
+import java.util.Map;
 
 @Mixin(value = PlayerAPI.class, remap = false)
 public abstract class PlayerAPIMixin  extends LivingEntityAPIMixin<Player>{
 
-    @Unique private ClientVRPlayers VRPlayer;
-
     @Unique
     @LuaWhitelist
-    @LuaMethodDoc("player.get_vr_rots")
-    public HashMap<String,Object> getVRRots() {
+    @LuaMethodDoc("player.vr.get_vr_data")
+    public Map<String,Object> vrGetData() {
         checkEntity();
-        ClientVRPlayers vrInst = ClientVRPlayers.getInstance();
-        if (vrInst.isVRPlayer(entity)) {
-            HashMap<String,Object> RotTable = new HashMap<>();
-            RotInfo VRRot;
-            VRRot = vrInst.getRotationsForPlayer(entity.getUUID());
+        VRAPI vrInst = VRAPI.instance();
+        if (!vrInst.isVRPlayer(entity)) { return new HashMap<>(); }
+        VRPose pose = vrInst.getVRPose(entity);
+        Map<String,Object> data = new HashMap<>();
 
-            RotTable.put("seated", LuaValue.valueOf(VRRot.seated));
-            RotTable.put("leftHanded", VRRot.leftHanded);
-            RotTable.put("donorHmd", VRRot.hmd);
+        data.put("fbtMode", pose.getFBTMode().name());
+        data.put("leftHanded", pose.isLeftHanded());
+        data.put("seated", pose.isSeated());
 
-            RotTable.put("headRot", MathUtils.quatfcToVec(VRRot.headQuat));
-            RotTable.put("headDir", MathUtils.vec3fcToVec(VRRot.headRot));
-            RotTable.put("headPos", MathUtils.vec3fcToVec(VRRot.headPos));
-
-            RotTable.put("offHandRot", MathUtils.quatfcToVec(VRRot.offHandQuat));
-            RotTable.put("offHandDir", MathUtils.vec3fcToVec(VRRot.offHandRot));
-            RotTable.put("offHandPos", MathUtils.vec3fcToVec(VRRot.offHandPos));
-
-            RotTable.put("mainHandRot", MathUtils.quatfcToVec(VRRot.mainHandQuat));
-            RotTable.put("mainHandDir", MathUtils.vec3fcToVec(VRRot.mainHandRot));
-            RotTable.put("mainHandPos", MathUtils.vec3fcToVec(VRRot.mainHandPos));
-
-            RotTable.put("worldScale", VRRot.worldScale);
-            RotTable.put("heightScale", VRRot.heightScale);
-
-            RotTable.put("fbtMode", VRRot.fbtMode.toString());
-
-            if (VRRot.fbtMode != FBTMode.ARMS_ONLY) {
-                RotTable.put("waistPos", MathUtils.vec3fcToVec(VRRot.waistPos));
-                RotTable.put("waistRot", MathUtils.quatfcToVec(VRRot.waistQuat));
-
-                RotTable.put("rightFootPos", MathUtils.vec3fcToVec(VRRot.rightFootPos));
-                RotTable.put("rightFootRot", MathUtils.quatfcToVec(VRRot.rightFootQuat));
-
-                RotTable.put("leftFootPos", MathUtils.vec3fcToVec(VRRot.leftFootPos));
-                RotTable.put("leftFootRot", MathUtils.quatfcToVec(VRRot.leftFootQuat));
+        for (VRBodyPart part : VRBodyPart.values()) {
+            if (part.availableInMode(pose.getFBTMode())) {
+                Map<String,Object> pdata = new HashMap<>();
+                VRBodyPartData partData = pose.getBodyPartData(part);
+                pdata.put("pos", FiguraVec3.fromVec3(partData.getPos()));
+                // remember the rest, idiot
+                data.put(part.name(),pdata);
             }
-
-            if (VRRot.fbtMode == FBTMode.WITH_JOINTS) {
-                RotTable.put("rightKneePos", MathUtils.vec3fcToVec(VRRot.rightKneePos));
-                RotTable.put("rightKneeRot", MathUtils.quatfcToVec(VRRot.rightKneeQuat));
-
-                RotTable.put("leftKneePos", MathUtils.vec3fcToVec(VRRot.leftKneePos));
-                RotTable.put("leftKneeRot", MathUtils.quatfcToVec(VRRot.leftKneeQuat));
-
-                RotTable.put("rightElbowPos", MathUtils.vec3fcToVec(VRRot.rightElbowPos));
-                RotTable.put("rightElbowRot", MathUtils.quatfcToVec(VRRot.rightElbowQuat));
-
-                RotTable.put("leftElbowPos", MathUtils.vec3fcToVec(VRRot.leftElbowPos));
-                RotTable.put("leftElbowRot", MathUtils.quatfcToVec(VRRot.leftElbowQuat));
-            }
-
-            return RotTable;
-        } else {
-            return null;
         }
+
+        return data;
     }
 
     @Unique
     @LuaWhitelist
-    @LuaMethodDoc("player.is_in_vr")
-    public boolean isInVR() {
+    @LuaMethodDoc("player.vr.is_in_vr")
+    public boolean vrIsInVR() {
         checkEntity();
-        return ClientVRPlayers.getInstance().isVRPlayer(entity);
+        return VRAPI.instance().isVRPlayer(entity);
     }
 
 }
