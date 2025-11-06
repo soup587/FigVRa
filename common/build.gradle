@@ -20,14 +20,6 @@ dependencies {
     // Figura common lib
     modCompileOnly("org.figuramc:figura-common-intermediary:$figura_version")
 
-    runtimeOnly "com.illposed.osc:javaosc-core:0.9"
-    runtimeOnly "org.lwjgl:lwjgl-openvr:$lwjgl_version"
-    runtimeOnly "org.lwjgl:lwjgl-openvr:$lwjgl_version:natives-linux"
-    runtimeOnly "org.lwjgl:lwjgl-openvr:$lwjgl_version:natives-macos"
-    runtimeOnly "org.lwjgl:lwjgl-openvr:$lwjgl_version:natives-windows"
-    runtimeOnly "com.electronwill.night-config:toml:3.6.6"
-    runtimeOnly "com.electronwill.night-config:core:3.6.6"
-
     modCompileOnly "maven.modrinth:vivecraft:1.20.1-$vivecraft_version-fabric"
 
     // We depend on fabric loader here to use the fabric @Environment annotations and get the mixin dependencies

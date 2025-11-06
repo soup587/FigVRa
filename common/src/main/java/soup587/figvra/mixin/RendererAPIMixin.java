@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.vivecraft.api.client.VRRenderingAPI;
 
 @Mixin(value = RendererAPI.class, remap = false)
-public class RendererAPIMixin {
+public abstract class RendererAPIMixin {
 
     @Unique
     @LuaWhitelist
@@ -19,8 +19,8 @@ public class RendererAPIMixin {
 
     @Unique
     @LuaWhitelist
-    @LuaMethodDoc("renderer.vr.is_first_render_pass")
-    public boolean vrIsFirstRenderPass() {
+    @LuaMethodDoc("renderer.vr.is_first_pass")
+    public boolean vrIsFirstPass() {
         return VRRenderingAPI.instance().isFirstRenderPass();
     }
 }

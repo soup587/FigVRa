@@ -4,13 +4,11 @@ import net.minecraft.world.entity.player.Player;
 import org.figuramc.figura.lua.LuaWhitelist;
 import org.figuramc.figura.lua.api.entity.PlayerAPI;
 import org.figuramc.figura.lua.docs.LuaMethodDoc;
-import org.figuramc.figura.math.vector.FiguraVec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.vivecraft.api.VRAPI;
-import org.vivecraft.api.data.VRBodyPart;
-import org.vivecraft.api.data.VRBodyPartData;
 import org.vivecraft.api.data.VRPose;
+import soup587.figvra.FigVRa;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,29 +18,13 @@ public abstract class PlayerAPIMixin  extends LivingEntityAPIMixin<Player>{
 
     @Unique
     @LuaWhitelist
-    @LuaMethodDoc("player.vr.get_vr_data")
-    public Map<String,Object> vrGetData() {
+    @LuaMethodDoc("player.vr.get_pose")
+    public Map<String,Object> vrGetPose() {
         checkEntity();
         VRAPI vrInst = VRAPI.instance();
         if (!vrInst.isVRPlayer(entity)) { return new HashMap<>(); }
         VRPose pose = vrInst.getVRPose(entity);
-        Map<String,Object> data = new HashMap<>();
-
-        data.put("fbtMode", pose.getFBTMode().name());
-        data.put("leftHanded", pose.isLeftHanded());
-        data.put("seated", pose.isSeated());
-
-        for (VRBodyPart part : VRBodyPart.values()) {
-            if (part.availableInMode(pose.getFBTMode())) {
-                Map<String,Object> pdata = new HashMap<>();
-                VRBodyPartData partData = pose.getBodyPartData(part);
-                pdata.put("pos", FiguraVec3.fromVec3(partData.getPos()));
-                // remember the rest, idiot
-                data.put(part.name().toLowerCase(),pdata);
-            }
-        }
-
-        return data;
+        return FigVRa.parseVRPose(pose);
     }
 
     @Unique

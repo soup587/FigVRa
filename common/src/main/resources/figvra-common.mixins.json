@@ -7,6 +7,7 @@
   ],
   "mixins": [
     "EntityAPIMixin",
+    "HostAPIMixin",
     "LivingEntityAPIMixin",
     "PlayerAPIMixin",
     "RendererAPIMixin"

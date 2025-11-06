@@ -32,6 +32,14 @@ dependencies {
     // Figura fabric
     modImplementation("org.figuramc:figura-fabric:$figura_version")
 
+    runtimeOnly "com.illposed.osc:javaosc-core:0.9"
+    runtimeOnly "org.lwjgl:lwjgl-openvr:$lwjgl_version"
+    runtimeOnly "org.lwjgl:lwjgl-openvr:$lwjgl_version:natives-linux"
+    runtimeOnly "org.lwjgl:lwjgl-openvr:$lwjgl_version:natives-macos"
+    runtimeOnly "org.lwjgl:lwjgl-openvr:$lwjgl_version:natives-windows"
+    runtimeOnly "com.electronwill.night-config:toml:3.6.6"
+    runtimeOnly "com.electronwill.night-config:core:3.6.6"
+
     modApi "maven.modrinth:vivecraft:1.20.1-$vivecraft_version-fabric"
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
