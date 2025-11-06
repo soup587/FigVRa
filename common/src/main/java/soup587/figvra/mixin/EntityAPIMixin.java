@@ -27,7 +27,7 @@ public abstract class EntityAPIMixin<T extends Entity> {
         checkEntity();
         if (entity instanceof Player) {
             ClientVRPlayers vrInst = ClientVRPlayers.getInstance();
-            if (vrInst.isVRPlayer((Player) entity)) {
+            if (vrInst.isVRPlayer(entity)) {
                 return FiguraVec3.fromVec3f((Vector3f) vrInst.getRotationsForPlayer(entity.getUUID()).headRot);
                 }
             else {

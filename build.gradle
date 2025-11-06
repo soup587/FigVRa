@@ -34,10 +34,6 @@ subprojects {
     dependencies {
         minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
 
-        modCompileOnly "com.electronwill.night-config:toml:3.6.6"
-        modCompileOnly "com.electronwill.night-config:core:3.6.6"
-        modCompileOnly "maven.modrinth:vivecraft:1.20.1-1.2.0-fabric"
-
         mappings loom.layered {
 			mappings("org.quiltmc:quilt-mappings:$minecraft_version+build.$mappings:intermediary-v2")
 			officialMojangMappings()

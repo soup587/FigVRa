@@ -45,6 +45,8 @@ dependencies {
     // Figura forge
     modImplementation("org.figuramc:figura-forge:$figura_version")
 
+    modApi "maven.modrinth:vivecraft:1.20.1-$vivecraft_version-forge"
+
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 }
