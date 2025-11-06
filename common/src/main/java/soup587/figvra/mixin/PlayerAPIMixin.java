@@ -38,7 +38,7 @@ public abstract class PlayerAPIMixin  extends LivingEntityAPIMixin<Player>{
                 VRBodyPartData partData = pose.getBodyPartData(part);
                 pdata.put("pos", FiguraVec3.fromVec3(partData.getPos()));
                 // remember the rest, idiot
-                data.put(part.name().toLowerCase(),pdata);
+                data.put(part.name(),pdata);
             }
         }
 
