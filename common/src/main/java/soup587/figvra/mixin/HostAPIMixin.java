@@ -62,6 +62,7 @@ public abstract class HostAPIMixin {
     @LuaMethodDoc("host.vr.trigger_haptic_pulse")
     public HostAPI vrTriggerHapticPulse(@LuaNotNil String bodyPart, float duration, Float frequency, float amplitude, float delay) {
         if (!isHost()) return ((HostAPI) (Object) this);
+        bodyPart = bodyPart.toUpperCase();
         VRClientAPI vrInst = VRClientAPI.instance();
         if (frequency == null) {
             vrInst.triggerHapticPulse(VRBodyPart.valueOf(bodyPart), duration);

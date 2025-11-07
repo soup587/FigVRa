@@ -6,7 +6,7 @@
   "host.vr.get_room_pose": "Returns VR pose data relative to your room\nThis is only updated once a frame, you should wrap this in a renderer:isFirstPass() check",
   "host.vr.get_world_pose": "Returns VR pose data relative to the world\nThis is only updated once a frame, you should wrap this in a renderer:isFirstPass() check",
   "host.vr.get_world_scale": "Returns your world scale",
-  "host.vr.trigger_haptic_pulse": "Triggers a haptic pulse for a given body part\nTakes a body part as a string, and a duration for the pulse to last\nOptionally also accepts a frequency in hz, an amplitude and a delay before triggering",
+  "host.vr.trigger_haptic_pulse": "Triggers a haptic pulse for a given body part\nTakes a body part as a string, and a duration for the pulse to last\nOptionally also accepts a frequency in hz, an amplitude and a delay before triggering\nThese arguments may or may not have an effect depending on what vendor your hardware is from",
   "host.vr.open_keyboard": "Forces the VR keyboard to open",
   "host.vr.close_keyboard": "Forces the VR keyboard to close",
 
