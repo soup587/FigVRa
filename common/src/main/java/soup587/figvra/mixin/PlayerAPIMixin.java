@@ -18,6 +18,14 @@ public abstract class PlayerAPIMixin  extends LivingEntityAPIMixin<Player>{
 
     @Unique
     @LuaWhitelist
+    @LuaMethodDoc("player.vr.is_in_vr")
+    public boolean vrIsInVR() {
+        checkEntity();
+        return VRAPI.instance().isVRPlayer(entity);
+    }
+
+    @Unique
+    @LuaWhitelist
     @LuaMethodDoc("player.vr.get_pose")
     public Map<String,Object> vrGetPose() {
         checkEntity();
@@ -25,14 +33,6 @@ public abstract class PlayerAPIMixin  extends LivingEntityAPIMixin<Player>{
         if (!vrInst.isVRPlayer(entity)) { return new HashMap<>(); }
         VRPose pose = vrInst.getVRPose(entity);
         return FigVRa.parseVRPose(pose);
-    }
-
-    @Unique
-    @LuaWhitelist
-    @LuaMethodDoc("player.vr.is_in_vr")
-    public boolean vrIsInVR() {
-        checkEntity();
-        return VRAPI.instance().isVRPlayer(entity);
     }
 
 }

@@ -1,3 +1,15 @@
 {
+  "renderer.vr.get_current_pass": "Returns the current render pass, as a string",
+  "renderer.vr.is_first_pass": "Gets if this is the first pass of a frame",
 
+  "host.vr.is_active": "Gets if VR is active locally",
+  "host.vr.get_room_pose": "Returns VR pose data relative to your room\nThis is only updated once a frame, you should wrap this in a renderer:isFirstPass() check",
+  "host.vr.get_world_pose": "Returns VR pose data relative to the world\nThis is only updated once a frame, you should wrap this in a renderer:isFirstPass() check",
+  "host.vr.get_world_scale": "Returns your world scale",
+  "host.vr.trigger_haptic_pulse": "Triggers a haptic pulse for a given body part\nTakes a body part as a string, and a duration for the pulse to last\nOptionally also accepts a frequency in hz, an amplitude and a delay before triggering",
+  "host.vr.open_keyboard": "Forces the VR keyboard to open",
+  "host.vr.close_keyboard": "Forces the VR keyboard to close",
+
+  "player.vr.is_in_vr": "Gets if the given player is in VR or not",
+  "player.vr.get_pose": "Returns VR pose data for a player, relative to the world\nThis is effectively only updated every tick, and can return strange values if executed in world_render"
 }
